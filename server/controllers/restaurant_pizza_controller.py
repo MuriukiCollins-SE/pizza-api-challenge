@@ -8,13 +8,16 @@ restaurant_pizza_bp = Blueprint('restaurant_pizza_bp', __name__)
 def create_restaurant_pizza():
     if not request.is_json:
         return jsonify({'errors': ['Content-Type must be application/json']}), 415
-    data = request.get_json()
+    data = request.get_json(silent=True)
+    if not data:
+        return jsonify({'errors': ['Invalid or missing JSON body']}), 400
+
     price = data.get('price')
     pizza_id = data.get('pizza_id')
     restaurant_id = data.get('restaurant_id')
 
     errors = []
-    if price is None or not (1 <= price <= 30):
+    if price is None or not isinstance(price, int) or not (1 <= price <= 30):
         errors.append('Price must be between 1 and 30')
     pizza = Pizza.query.get(pizza_id)
     restaurant = Restaurant.query.get(restaurant_id)
@@ -51,6 +54,28 @@ def create_restaurant_pizza():
             "address": restaurant.address
         }
     }), 201
+
+@restaurant_pizza_bp.route('/restaurant_pizzas/<int:id>', methods=['GET'])
+def get_restaurant_pizza_by_id(id):
+    rp = RestaurantPizza.query.get(id)
+    if not rp:
+        return jsonify({"error": "RestaurantPizza not found"}), 404
+    return jsonify({
+        "id": rp.id,
+        "price": rp.price,
+        "pizza_id": rp.pizza_id,
+        "restaurant_id": rp.restaurant_id,
+        "pizza": {
+            "id": rp.pizza.id,
+            "name": rp.pizza.name,
+            "ingredients": rp.pizza.ingredients
+        },
+        "restaurant": {
+            "id": rp.restaurant.id,
+            "name": rp.restaurant.name,
+            "address": rp.restaurant.address
+        }
+    }), 200
 
 @restaurant_pizza_bp.route('/restaurant_pizza', methods=['GET'])
 def get_restaurant_pizzas():

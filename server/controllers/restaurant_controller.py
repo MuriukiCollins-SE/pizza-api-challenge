@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from server.models import Restaurant, RestaurantPizza
+from server.models import Restaurant
 from server.extensions import db
 
 restaurant_bp = Blueprint('restaurant_bp', __name__)
@@ -16,17 +16,19 @@ def get_restaurants():
     ])
 
 @restaurant_bp.route('/restaurants/<int:id>', methods=['GET'])
-def get_restaurant(id):
+def get_restaurant_by_id(id):
     restaurant = Restaurant.query.get(id)
     if not restaurant:
         return jsonify({"error": "Restaurant not found"}), 404
+    # Defensive: check for pizzas relationship and always return a list
     pizzas = [
         {
             "id": rp.pizza.id,
             "name": rp.pizza.name,
             "ingredients": rp.pizza.ingredients
         }
-        for rp in restaurant.restaurant_pizzas
+        for rp in getattr(restaurant, "restaurant_pizzas", [])
+        if getattr(rp, "pizza", None)
     ]
     return jsonify({
         "id": restaurant.id,
