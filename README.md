@@ -1,87 +1,54 @@
-{
-  "info": {
-    "name": "Pizza Restaurant API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "Get All Restaurants",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:5000/restaurants",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "5000",
-          "path": ["restaurants"]
-        }
-      }
-    },
-    {
-      "name": "Get Restaurant by ID",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:5000/restaurants/1",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "5000",
-          "path": ["restaurants", "1"]
-        }
-      }
-    },
-    {
-      "name": "Delete Restaurant",
-      "request": {
-        "method": "DELETE",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:5000/restaurants/1",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "5000",
-          "path": ["restaurants", "1"]
-        }
-      }
-    },
-    {
-      "name": "Get All Pizzas",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:5000/pizzas",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "5000",
-          "path": ["pizzas"]
-        }
-      }
-    },
-    {
-      "name": "Create RestaurantPizza",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\"price\": 5, \"pizza_id\": 1, \"restaurant_id\": 3}"
-        },
-        "url": {
-          "raw": "http://localhost:5000/restaurant_pizzas",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "5000",
-          "path": ["restaurant_pizzas"]
-        }
-      }
-    }
-  ]
-}
+# Pizza Restaurant API
+
+A simple Flask REST API for managing restaurants, pizzas, and their associations.
+
+## Features
+
+- List all restaurants and pizzas
+- Get details of a restaurant (including its pizzas)
+- Create, delete restaurants and pizzas
+- Create restaurant-pizza associations with price validation
+
+## Setup
+
+1. Install dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+
+2. Run migrations:
+   ```
+   flask --app server.app db upgrade
+   ```
+
+3. (Optional) Seed the database:
+   ```
+   flask --app server.app shell < server/seed.py
+   ```
+
+4. Start the server:
+   ```
+   flask --app server.app run
+   ```
+
+## API Endpoints
+
+- `GET /restaurants` - List all restaurants
+- `GET /restaurants/<id>` - Get restaurant details and its pizzas
+- `POST /restaurants` - Create a new restaurant
+- `DELETE /restaurants/<id>` - Delete a restaurant
+
+- `GET /pizzas` - List all pizzas
+- `GET /pizzas/<id>` - Get pizza details
+- `POST /pizzas` - Create a new pizza
+
+- `POST /restaurant_pizzas` - Create a restaurant-pizza association
+  - JSON body: `{ "price": 7, "pizza_id": 1, "restaurant_id": 5 }`
+
+## Notes
+
+- Use `Content-Type: application/json` for POST requests.
+- Price for restaurant-pizza must be between 1 and 30.
+- Use Postman or curl to test the endpoints.
+
+---

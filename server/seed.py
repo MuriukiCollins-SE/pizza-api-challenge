@@ -40,6 +40,12 @@ restaurants = [
     Restaurant(name="Bella Roma", address="753 Aspen Ct"),
 ]
 
+# Add a restaurant with a known id for testing
+restaurant = Restaurant(name="Kiki's Pizza", address="address3")
+db.session.add(restaurant)
+db.session.commit()
+print("Added restaurant:", restaurant.id, restaurant.name)
+
 db.session.bulk_save_objects(restaurants)
 db.session.commit()
 print("Restaurants table populated!")
