@@ -7,7 +7,7 @@ pizza_bp = Blueprint('pizza_bp', __name__)
 @pizza_bp.route('/pizzas', methods=['GET'])
 def get_pizzas():
     pizzas = Pizza.query.all()
-    # If no pizzas, add a demo one for functionality
+    
     if not pizzas:
         demo = Pizza(name="Demo Pizza", ingredients="Demo Ingredients")
         db.session.add(demo)

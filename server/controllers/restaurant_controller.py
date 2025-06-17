@@ -20,7 +20,7 @@ def get_restaurant_by_id(id):
     restaurant = Restaurant.query.get(id)
     if not restaurant:
         return jsonify({"error": "Restaurant not found"}), 404
-    # Defensive: check for pizzas relationship and always return a list
+    # check for pizzas relationship and always return a list
     pizzas = [
         {
             "id": rp.pizza.id,

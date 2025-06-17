@@ -17,7 +17,7 @@ def create_restaurant_pizza():
     restaurant_id = data.get('restaurant_id')
 
     errors = []
-    # Always validate price first and return immediately if invalid
+    # validate price first and return immediately if invalid
     if price is None or not isinstance(price, int) or not (1 <= price <= 30):
         return jsonify({'errors': ['Price must be between 1 and 30']}), 400
 
