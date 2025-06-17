@@ -13,7 +13,7 @@ A simple Flask REST API for managing restaurants, pizzas, and their associations
 
 1. Install dependencies:
    ```
-   pip install -r requirements.txt
+   pipenv install
    ```
 
 2. Run migrations:
@@ -21,12 +21,7 @@ A simple Flask REST API for managing restaurants, pizzas, and their associations
    flask --app server.app db upgrade
    ```
 
-3. (Optional) Seed the database:
-   ```
-   flask --app server.app shell < server/seed.py
-   ```
-
-4. Start the server:
+3. Start the server:
    ```
    flask --app server.app run
    ```
